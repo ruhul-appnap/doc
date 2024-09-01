@@ -30,6 +30,11 @@ export default function Home() {
     socket.on("connect", onConnect);
     socket.on("disconnect", onDisconnect);
 
+    socket.on("update-change", (data) => {
+      console.log(data);
+      setContent(JSON.parse(data));
+    });
+
     return () => {
       socket.off("connect", onConnect);
       socket.off("disconnect", onDisconnect);
@@ -46,7 +51,10 @@ export default function Home() {
       <textarea
         className="border border-green-600 min-h-80 m-4 w-[90%]"
         value={content}
-        onChange={(e) => setContent(e.target.value)}
+        onChange={(e) => {
+          setContent(e.target.value);
+          socket.emit("value-change", JSON.stringify(e.target.value));
+        }}
       ></textarea>
     </main>
   );

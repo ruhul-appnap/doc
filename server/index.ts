@@ -16,6 +16,10 @@ app.prepare().then(() => {
 
   io.on("connection", (socket) => {
     // ...
+    socket.on("value-change", (data) => {
+      console.log(data);
+      io.emit("update-change", data);
+    });
   });
 
   httpServer
